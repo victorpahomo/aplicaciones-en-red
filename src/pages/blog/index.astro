@@ -1,0 +1,114 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+const posts = await getCollection('blog');
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="UNIR Foro" description="Foro universitario de aplicaciones en red" />
+		<style>
+			.foro-contenedor {
+				width: 100%;
+				max-width: 1200px;
+				margin: 3rem auto;
+				padding: 2rem 1.5rem;
+				background: #fff;
+				border-radius: 1.5rem;
+				box-shadow: 0 4px 32px 0 #00749a22;
+				overflow-x: hidden;
+			}
+			.foro-titulo {
+				color: var(--color-unir-azul-oscuro);
+				font-size: 3rem;
+				font-weight: 900;
+				letter-spacing: 1px;
+				margin-bottom: 2.5rem;
+				text-align: center;
+			}
+			.foro-lista {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: flex;
+				flex-direction: column;
+				gap: 2.5rem;
+			}
+			.foro-item {
+				width: 100%;
+				box-sizing: border-box;
+				margin: 0;
+				padding: 2.2rem 2rem;
+				border: none;
+				border-radius: 1.25rem;
+				background: #fff;
+				box-shadow: 0 4px 24px 0 rgba(60,60,60,0.10);
+				transition: box-shadow 0.2s, transform 0.2s;
+				position: relative;
+				overflow: hidden;
+			}
+			.foro-item:hover {
+				box-shadow: 0 8px 32px 0 rgba(60,60,60,0.16);
+				transform: translateY(-4px) scale(1.012);
+				background: #fafbfc;
+			}
+			.foro-link {
+				font-size: 2rem;
+				font-weight: bold;
+				color: var(--color-unir-azul-oscuro);
+				text-decoration: none;
+				transition: color 0.2s;
+				display: block;
+				margin-bottom: 0.5rem;
+			}
+			.foro-link:hover {
+				color: var(--color-unir-azul);
+				text-decoration: underline;
+			}
+			.foro-desc {
+				margin: 0;
+				color: #555;
+				font-size: 1.2rem;
+			}
+			@media (max-width: 900px) {
+				.foro-contenedor {
+					max-width: 100vw;
+					padding: 1.5rem 0.5rem;
+					overflow-x: hidden;
+				}
+				.foro-item {
+					padding: 1.2rem 0.5rem;
+					box-sizing: border-box;
+				}
+				.foro-titulo {
+					font-size: 2.2rem;
+				}
+				.foro-link {
+					font-size: 1.2rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main class="prose foro-contenedor">
+			<h1 class="foro-titulo">Temas del foro</h1>
+			<ul class="foro-lista">
+				{posts.map(post => (
+					<li class="foro-item">
+						<a href={post.slug ? `/blog/${post.slug}/` : '#'} class="foro-link">
+							{post.data.title}
+						</a>
+						<p class="foro-desc">{post.data.description}</p>
+					</li>
+				))}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
